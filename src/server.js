@@ -37,25 +37,19 @@ app.get('/auth/callback', async (req, res) => {
     }
 
     try {
-        const codeVerifier = cache['code_verifier']; // Recupera o code_verifier salvo
-        if (!codeVerifier) {
-            return res.status(400).json({ error: 'Code Verifier não encontrado' });
-        }
-
         const response = await axios.post('https://api.mercadopago.com/oauth/token',
             qs.stringify({
                 grant_type: 'authorization_code',
                 client_id: process.env.MP_CLIENT_ID,
                 client_secret: process.env.MP_CLIENT_SECRET,
                 code,
-                redirect_uri: process.env.MP_REDIRECT_URI,
-                code_verifier: codeVerifier, // Enviando o PKCE correto
+                redirect_uri: process.env.MP_REDIRECT_URI
             }),
             { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
         );
 
-        // Salvar o token no JSON
-        fs.writeFileSync('tokens.json', JSON.stringify(response.data, null, 2));
+        // Salvar o token no arquivo JSON
+        fs.writeFileSync('res.json', JSON.stringify(response.data, null, 2));
 
         res.json(response.data);
     } catch (error) {
