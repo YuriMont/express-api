@@ -46,7 +46,7 @@ app.get("/auth", (req, res) => {
   const { codeVerifier, codeChallenge } = generatePKCE();
 
   // Armazenar o code_verifier para usá-lo depois na troca de token
-  req.session = { codeVerifier }; // Pode ser armazenado em sessão ou banco de dados
+  req.session.codeVerifier = codeVerifier; // Pode ser armazenado em sessão ou banco de dados
 
   // Gerar a URL de autorização com os parâmetros necessários
   const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
