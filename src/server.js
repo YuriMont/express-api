@@ -59,7 +59,7 @@ app.get('/auth/callback', async (req, res) => {
 
 const getToken = () => {
     try {
-        const data = fs.readFileSync('tokens.json', 'utf-8');
+        const data = fs.readFileSync('res.json', 'utf-8');
         return JSON.parse(data);
     } catch (error) {
         return null;
