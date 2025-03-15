@@ -11,6 +11,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+const CLIENT_ID = process.env.MP_CLIENT_ID;
+const CLIENT_SECRET = process.env.MP_CLIENT_SECRET;
+const REDIRECT_URI = process.env.MP_REDIRECT_URI;
+
 const generatePKCE = () => {
   const codeVerifier = crypto.randomBytes(32).toString("base64url"); // Gerar code_verifier
   const codeChallenge = crypto
@@ -45,9 +49,7 @@ app.get("/auth", (req, res) => {
   req.session = { codeVerifier }; // Pode ser armazenado em sessão ou banco de dados
 
   // Gerar a URL de autorização com os parâmetros necessários
-  const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-    REDIRECT_URI
-  )}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+  const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
   res.redirect(authUrl);
 });
@@ -55,7 +57,7 @@ app.get("/auth", (req, res) => {
 // Rota de callback para receber o código de autorização
 app.get("/auth/callback", async (req, res) => {
   const authorizationCode = req.query.code;
-  
+
   const codeVerifier = req.session.codeVerifier;
 
   if (!authorizationCode || !codeVerifier) {
