@@ -49,7 +49,7 @@ app.get('/auth/callback', async (req, res) => {
         );
 
         // Salvar o token no arquivo JSON
-        fs.writeFileSync('tokens.json', JSON.stringify(response.data, null, 2));
+        fs.writeFileSync('res.json', JSON.stringify(response.data, null, 2));
 
         res.json(response.data);
     } catch (error) {
