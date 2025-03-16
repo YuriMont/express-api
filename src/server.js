@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session'); 
 const dotenv = require("dotenv");
 const axios = require("axios");
 const qs = require("qs");
@@ -30,6 +31,13 @@ const generatePKCE = () => {
 
 // Middleware para processar JSON
 app.use(express.json());
+
+app.use(session({
+  secret: process.env.SECERET, // Use uma string segura para produção
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // true apenas se usar HTTPS
+}));
 
 // Rota principal
 app.get("/", (req, res) => {
