@@ -79,11 +79,10 @@ app.get("/auth/callback", async (req, res) => {
       qs.stringify({
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
-        grant_type: 'refresh_token',
+        grant_type: 'authorization_code',
         code: authorizationCode,
         redirect_uri: REDIRECT_URI,
         code_verifier: codeVerifier,  // Usar o code_verifier aqui
-        refresh_token: "TG-67d62a57dd749e0001bc68e6-1530669650"
       }),
       {
         headers: {
