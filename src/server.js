@@ -83,6 +83,7 @@ app.get("/auth/callback", async (req, res) => {
         code: authorizationCode,
         redirect_uri: REDIRECT_URI,
         code_verifier: codeVerifier,  // Usar o code_verifier aqui
+        refresh_token: "TG-67d62a57dd749e0001bc68e6-1530669650"
       }),
       {
         headers: {
