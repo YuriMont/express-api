@@ -82,7 +82,6 @@ app.get("/auth/callback", async (req, res) => {
     const response = await axios.post(
       'https://api.mercadopago.com/oauth/token',
       qs.stringify({
-        client_id: CLIENT_ID,
         client_secret: ACCESS_TOKEN,
         grant_type: 'authorization_code',
         code: authorizationCode,
