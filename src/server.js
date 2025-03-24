@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 
 const CLIENT_ID = process.env.MP_CLIENT_ID;
 const CLIENT_SECRET = process.env.MP_CLIENT_SECRET;
+const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 const REDIRECT_URI = process.env.MP_REDIRECT_URI;
 
 const generatePKCE = () => {
@@ -58,7 +59,9 @@ app.get("/auth", (req, res) => {
   const randomId =  Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
 
   // Gerar a URL de autorização com os parâmetros necessários
+  //const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&platform_id=mp&state=${randomId}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
   const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&platform_id=mp&state=${randomId}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+
 
   res.redirect(authUrl);
 });
@@ -66,6 +69,7 @@ app.get("/auth", (req, res) => {
 // Rota de callback para receber o código de autorização
 app.get("/auth/callback", async (req, res) => {
   const authorizationCode = req.query.code;
+  const state = req.query.state;
 
   const codeVerifier = req.session.codeVerifier;
 
@@ -79,7 +83,7 @@ app.get("/auth/callback", async (req, res) => {
       'https://api.mercadopago.com/oauth/token',
       qs.stringify({
         client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
+        client_secret: ACCESS_TOKEN,
         grant_type: 'authorization_code',
         code: authorizationCode,
         redirect_uri: REDIRECT_URI,
