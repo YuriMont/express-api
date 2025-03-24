@@ -55,9 +55,10 @@ app.get("/auth", (req, res) => {
 
   // Armazenar o code_verifier para usá-lo depois na troca de token
   req.session.codeVerifier = codeVerifier; // Pode ser armazenado em sessão ou banco de dados
+  const randomId =  Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
 
   // Gerar a URL de autorização com os parâmetros necessários
-  const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+  const authUrl = `https://auth.mercadopago.com/authorization?response_type=code&client_id=${CLIENT_ID}&platform_id=mp&state=${randomId}&redirect_uri=${REDIRECT_URI}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
   res.redirect(authUrl);
 });
